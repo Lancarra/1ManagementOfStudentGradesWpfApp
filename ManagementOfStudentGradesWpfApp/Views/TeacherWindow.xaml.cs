@@ -75,7 +75,14 @@ namespace ManagementOfStudentGradesWpfApp.Views
 
         private void btnSeach_Click(object sender, RoutedEventArgs e)
         {
-
+            using (_dbContext = new ApplicationDbContext())
+            {
+                _dbContext.Enrollments.Load();
+                _dbContext.Courses.Load();
+                _dbContext.Teachers.Load();
+                _dbContext.Students.Load();
+                enrollmentListView.ItemsSource = _dbContext.Courses.Where(x=>x.Title.Contains(tbSearch.Text)).ToList();
+            }
         }
     }
 }
